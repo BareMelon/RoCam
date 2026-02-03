@@ -128,7 +128,8 @@ export const listFeedbackByGameId = async (
      LIMIT $${nextParam} OFFSET $${nextParam + 1}`,
     params
   );
-  return result.rows.map((r) => ({ ...r, developerNotes: r.developerNotes ?? null } as FeedbackRecord));
+  type Row = FeedbackRecord & { developerNotes?: string | null };
+  return result.rows.map((r: Row) => ({ ...r, developerNotes: r.developerNotes ?? null } as FeedbackRecord));
 };
 
 export const updateFeedback = async (
@@ -242,9 +243,9 @@ export const getFeedbackStats = async (gameId: string): Promise<FeedbackStats> =
 
   const total = Number(totals.rows[0]?.total ?? 0);
   const byStatus: Record<string, number> = {};
-  statusRows.rows.forEach((r) => { byStatus[r.status] = Number(r.count); });
+  statusRows.rows.forEach((r: { status: string; count: string }) => { byStatus[r.status] = Number(r.count); });
   const byType: Record<string, number> = {};
-  typeRows.rows.forEach((r) => { byType[r.type] = Number(r.count); });
+  typeRows.rows.forEach((r: { type: string; count: string }) => { byType[r.type] = Number(r.count); });
 
   const openCount = (byStatus["new"] ?? 0) + (byStatus["triaged"] ?? 0);
   const resolvedCount = byStatus["resolved"] ?? 0;
@@ -252,7 +253,7 @@ export const getFeedbackStats = async (gameId: string): Promise<FeedbackStats> =
   const bugPct = total ? Math.round((bugCount / total) * 100) : 0;
 
   const dayMap = new Map<string, number>();
-  dailyRows.rows.forEach((r) => dayMap.set(r.date, Number(r.count)));
+  dailyRows.rows.forEach((r: { date: string; count: string }) => dayMap.set(r.date, Number(r.count)));
   const last7Days: { date: string; count: number }[] = [];
   for (let i = 6; i >= 0; i--) {
     const d = new Date();
