@@ -1,0 +1,669 @@
+================================================================================
+                    COMPREHENSIVE AI ASSISTANT RULES
+          Maximizing Context Window Efficiency & Code Quality
+================================================================================
+
+This document contains comprehensive rules for AI assistants to follow when
+helping with programming, web development, and software engineering tasks.
+These rules ensure efficient context window usage and production of top-tier
+code, programs, and websites.
+
+================================================================================
+SECTION 1: CONTEXT WINDOW EFFICIENCY RULES
+================================================================================
+
+1.1 TOKEN OPTIMIZATION STRATEGIES
+----------------------------------
+- Always read files selectively. Read only the necessary sections, not entire files,
+  unless absolutely required for understanding the full context.
+- When multiple files need to be read, read them in parallel batches rather than
+  sequentially to reduce total tool call overhead.
+- Use semantic search queries that are specific and targeted rather than broad.
+  Example: "How does authentication work?" not "authentication".
+- Prefer grep for exact symbol/string searches over semantic search when looking
+  for specific function names, imports, or exact code patterns.
+- When providing code examples, include entire code never just relevant sections,
+  always entire files unless impossible.
+- Use file path references instead of pasting large code blocks when referencing
+  existing code that hasn't been modified.
+- Avoid repeating information already present in the conversation or codebase.
+
+1.2 SEARCH VS INFERENCE DECISION FRAMEWORK
+-------------------------------------------
+- SEARCH when:
+  * The codebase structure is unknown or unclear
+  * Specific implementation details are needed
+  * Understanding dependencies or relationships between components
+  * Verifying existing patterns or conventions in the codebase
+  * The question requires knowledge of project-specific architecture
+- INFER/ASSUME when:
+  * The pattern is standard and well-established (e.g., REST API structure)
+  * The requirement is clear and implementation is straightforward
+  * Similar patterns exist in visible code and the variation is minor
+  * The search would take more tokens than a reasonable implementation
+- When uncertain, prefer a quick targeted search over guessing, but set clear
+  boundaries on search scope to avoid exhaustive exploration.
+
+1.3 INFORMATION GATHERING PRIORITIZATION
+-----------------------------------------
+Priority order for gathering information:
+1. User's explicit requirements and constraints
+2. Current file(s) open or in focus
+3. Project structure and configuration files (package.json, tsconfig.json, etc.)
+4. Related files directly referenced or imported
+5. Similar patterns or components in the codebase
+6. Documentation or comments explaining architecture decisions
+
+Stop gathering information when you have enough context to make informed decisions.
+Avoid "fishing expeditions" that explore the codebase without clear purpose.
+
+1.4 AVOIDING REDUNDANT OPERATIONS
+----------------------------------
+- Never read a file more than once in a single response unless it has been
+  modified since the last read.
+- Cache understanding of codebase structure - don't re-explore the same
+  directories repeatedly.
+- When reading multiple related files, read them in a single batch operation.
+- Avoid tool calls that duplicate information already available from previous
+  calls or conversation context.
+- Before making a search or read operation, check if the information was
+  already provided in the current conversation thread.
+
+1.5 EFFICIENT CODE CITATION AND REFERENCING
+--------------------------------------------
+- Use code references with line numbers (startLine:endLine:filepath format) when
+  citing existing code from the codebase.
+- Use standard markdown code blocks only when proposing new code or code not
+  in the codebase.
+- When showing code, include only the necessary lines with context, not entire
+  functions or classes unless the whole unit is relevant.
+- Prefer inline references to files over pasting large code blocks.
+- When explaining code, reference specific locations rather than reproducing
+  entire files.
+
+================================================================================
+SECTION 2: CODE QUALITY STANDARDS
+================================================================================
+
+2.1 CLEAN CODE BEST PRACTICES
+------------------------------
+- Write code that is self-documenting through clear naming and structure.
+- Functions should do one thing and do it well (Single Responsibility Principle).
+- Keep functions small and focused - ideally under 50 lines, rarely over 100.
+- Avoid deep nesting - prefer early returns and guard clauses.
+- Eliminate code duplication through abstraction, but don't over-abstract.
+- Use meaningful variable and function names that describe intent, not just
+  implementation details.
+- Prefer explicit code over clever one-liners that sacrifice readability.
+- Remove dead code, commented-out code, and unused imports/variables.
+- Maintain consistent code style throughout the project.
+
+2.2 ERROR HANDLING REQUIREMENTS
+--------------------------------
+- Always handle potential error cases explicitly - don't ignore them.
+- Use appropriate error types and provide meaningful error messages.
+- Validate input at system boundaries (API endpoints, function parameters, etc.).
+- Use try-catch blocks for operations that can fail (file I/O, network requests,
+  parsing, etc.).
+- Provide user-friendly error messages for user-facing errors.
+- Log technical details for debugging while showing simplified messages to users.
+- Fail fast - detect and handle errors as early as possible in the execution flow.
+- Use type guards and assertions to ensure type safety at runtime when needed.
+
+2.3 TYPE SAFETY AND VALIDATION
+-------------------------------
+- Use TypeScript strict mode whenever possible.
+- Define explicit types for function parameters and return values.
+- Avoid 'any' type - use 'unknown' and type guards when type is truly unknown.
+- Validate external data (API responses, user input, file contents) before use.
+- Use discriminated unions for state management and variant types.
+- Leverage type inference where it improves readability without sacrificing safety.
+- Create custom types for domain concepts rather than using primitives everywhere.
+- Use const assertions and readonly modifiers to prevent unintended mutations.
+
+2.4 CODE ORGANIZATION PRINCIPLES
+---------------------------------
+- Group related functionality together (cohesion).
+- Separate concerns - business logic separate from UI, data access separate from
+  business logic.
+- Use appropriate directory structure based on feature or layer architecture.
+- Keep files focused - one primary responsibility per file.
+- Extract reusable utilities into shared modules.
+- Organize imports: external libraries first, then internal modules, then relative
+  imports.
+- Use index files to create clean public APIs for modules.
+- Maintain consistent file naming conventions (PascalCase for components,
+  camelCase for utilities, kebab-case for files, etc.).
+
+2.5 NAMING CONVENTIONS
+----------------------
+- Use descriptive names that explain purpose, not implementation:
+  Good: getUserDisplayName(), calculateTotalPrice()
+  Bad: getData(), calc(), helper()
+- Use verbs for functions/methods: getUserData, validateInput, renderComponent
+- Use nouns for variables and classes: UserService, config, errorMessage
+- Use boolean variables/methods with prefixes: isActive, hasPermission, canEdit
+- Use constants in UPPER_SNAKE_CASE: MAX_RETRY_ATTEMPTS, API_BASE_URL
+- Avoid abbreviations unless widely understood (e.g., 'id', 'url', 'api').
+- Avoid single-letter variables except in loops or mathematical contexts.
+- Use domain-specific terminology consistently throughout the codebase.
+
+================================================================================
+SECTION 3: UI/UX DESIGN PRINCIPLES
+================================================================================
+
+3.1 MODERN DESIGN STANDARDS
+---------------------------
+- Use modern, clean design aesthetics - avoid cluttered or outdated interfaces.
+- Implement consistent spacing system (4px, 8px, 16px, 24px, 32px, etc.).
+- Use appropriate typography hierarchy with clear font sizes and weights.
+- Apply consistent color palette throughout the application.
+- Use subtle shadows and borders to create depth and separation.
+- Implement smooth transitions and animations (200-300ms typically) for state changes.
+- Follow current design trends but prioritize usability over fashion.
+- Ensure visual consistency across all pages and components.
+- Use high-quality icons and images that match the design system.
+- Implement proper loading states and empty states for better UX.
+
+3.2 ACCESSIBILITY REQUIREMENTS
+-------------------------------
+- Always include semantic HTML elements (header, nav, main, article, section, etc.).
+- Provide alt text for all images that convey information.
+- Ensure sufficient color contrast (WCAG AA minimum, AAA preferred).
+- Make all interactive elements keyboard accessible.
+- Use ARIA labels when semantic HTML is insufficient.
+- Ensure focus indicators are visible and clear.
+- Structure content with proper heading hierarchy (h1 -> h2 -> h3, etc.).
+- Provide skip navigation links for keyboard users.
+- Support screen reader announcements for dynamic content changes.
+- Test with keyboard-only navigation and screen readers.
+
+3.3 RESPONSIVE DESIGN RULES
+----------------------------
+- Design mobile-first - start with mobile layout, enhance for larger screens.
+- Use relative units (rem, em, %, vw, vh) instead of fixed pixels where appropriate.
+- Implement breakpoints at logical points: 320px, 768px, 1024px, 1280px, 1440px.
+- Test layouts at common viewport sizes (mobile, tablet, desktop, large desktop).
+- Ensure touch targets are at least 44x44px on mobile devices.
+- Avoid horizontal scrolling on any device.
+- Use CSS Grid and Flexbox for responsive layouts instead of fixed positioning.
+- Implement responsive typography that scales appropriately.
+- Optimize images for different screen densities (retina displays).
+- Hide or adapt content appropriately for different screen sizes.
+
+3.4 USER EXPERIENCE GUIDELINES
+-------------------------------
+- Make primary actions clear and prominent.
+- Provide immediate feedback for user actions (loading states, success messages).
+- Minimize user input required - use sensible defaults, autocomplete, suggestions.
+- Prevent errors before they happen - validate inputs, disable invalid actions.
+- Provide clear error messages that explain what went wrong and how to fix it.
+- Use progressive disclosure - show information in layers, don't overwhelm.
+- Maintain consistency - same actions should work the same way everywhere.
+- Follow platform conventions - users expect certain behaviors on web, mobile, etc.
+- Make it obvious what is clickable/interactive (hover states, cursor changes).
+- Provide clear navigation and indicate current location in the app.
+
+3.5 VISUAL HIERARCHY AND SPACING
+---------------------------------
+- Use size, color, weight, and position to establish visual hierarchy.
+- Important elements should be larger, bolder, or more prominent.
+- Group related elements together using whitespace (proximity principle).
+- Use consistent spacing scale throughout (4px base unit recommended).
+- Apply more whitespace around important sections and less around related items.
+- Use alignment to create visual connections and organization.
+- Implement consistent padding and margins for similar elements.
+- Balance whitespace - too little is cluttered, too much feels empty.
+- Use visual separation (borders, backgrounds, shadows) to distinguish sections.
+- Follow the rule of thirds and other composition principles for layout.
+
+================================================================================
+SECTION 4: PERFORMANCE OPTIMIZATION
+================================================================================
+
+4.1 CODE PERFORMANCE BEST PRACTICES
+------------------------------------
+- Avoid premature optimization, but be aware of common performance pitfalls.
+- Use efficient algorithms and data structures for the problem domain.
+- Minimize unnecessary computations - cache results when appropriate.
+- Avoid creating unnecessary objects or arrays in loops.
+- Use appropriate collection types (Set for uniqueness checks, Map for key-value
+  lookups).
+- Debounce or throttle expensive operations (API calls, resize handlers, etc.).
+- Use Web Workers for CPU-intensive tasks that block the main thread.
+- Profile code before optimizing - optimize actual bottlenecks, not assumptions.
+- Avoid synchronous operations that block execution when async alternatives exist.
+- Use memoization for expensive function calls with repeated inputs.
+
+4.2 RESOURCE USAGE OPTIMIZATION
+--------------------------------
+- Minimize memory leaks - clean up event listeners, timers, and subscriptions.
+- Use lazy initialization for expensive resources.
+- Release resources promptly when no longer needed (close files, connections, etc.).
+- Optimize images - use appropriate formats (WebP, AVIF) and sizes.
+- Minimize DOM manipulation - batch changes, use DocumentFragment when possible.
+- Avoid memory-intensive operations in loops (deep cloning, large array operations).
+- Use pagination or virtualization for large lists instead of rendering everything.
+- Implement proper cleanup in useEffect hooks and component unmount handlers.
+- Monitor bundle size and avoid importing entire libraries when only parts are needed.
+
+4.3 LAZY LOADING AND CODE SPLITTING
+------------------------------------
+- Implement code splitting at route level for better initial load times.
+- Use dynamic imports for large dependencies or rarely-used features.
+- Lazy load images - use loading="lazy" attribute and Intersection Observer.
+- Defer non-critical JavaScript until after initial render.
+- Split vendor bundles from application code.
+- Use React.lazy() or dynamic imports for component code splitting.
+- Load third-party scripts asynchronously when possible.
+- Implement progressive loading - show critical content first, enhance progressively.
+- Preload critical resources and prefetch likely-to-be-needed resources.
+- Use service workers for caching and offline functionality when appropriate.
+
+4.4 CACHING STRATEGIES
+----------------------
+- Implement appropriate HTTP caching headers (Cache-Control, ETag, etc.).
+- Use browser caching for static assets with long cache times and versioning.
+- Implement client-side caching for API responses when data doesn't change frequently.
+- Use memoization for expensive computations or API calls within component lifecycle.
+- Cache rendered components or computation results when inputs haven't changed.
+- Implement service worker caching for offline functionality and performance.
+- Use CDN for static assets to leverage geographic caching.
+- Cache database queries when appropriate - but be careful with stale data.
+- Implement cache invalidation strategies that maintain data consistency.
+- Use localStorage/sessionStorage appropriately for client-side data persistence.
+
+4.5 BUNDLE SIZE CONSIDERATIONS
+-------------------------------
+- Analyze bundle size regularly using tools like webpack-bundle-analyzer.
+- Remove unused dependencies and dead code.
+- Use tree-shaking compatible imports (named imports instead of default when possible).
+- Prefer smaller, focused libraries over large monolithic ones.
+- Use polyfills selectively - don't include entire polyfill libraries if only
+  specific features are needed.
+- Minimize and compress production bundles (minification, gzip, brotli).
+- Consider alternative lightweight libraries when bundle size is critical.
+- Split vendor bundles to leverage browser caching better.
+- Monitor and set bundle size budgets to catch regressions early.
+- Use dynamic imports for optional features to keep main bundle small.
+
+================================================================================
+SECTION 5: ARCHITECTURE & DESIGN PATTERNS
+================================================================================
+
+5.1 PROJECT STRUCTURE GUIDELINES
+---------------------------------
+- Organize by feature or domain when projects grow beyond simple CRUD apps.
+- Keep related files close together - co-locate components, styles, and tests.
+- Separate concerns into clear layers: presentation, business logic, data access.
+- Use consistent directory naming conventions throughout the project.
+- Create clear boundaries between modules/features to enable independent development.
+- Keep configuration files at the root level, organized logically.
+- Separate shared/common code from feature-specific code.
+- Use barrel exports (index files) to create clean public APIs for modules.
+- Maintain a clear distinction between source code, tests, and build artifacts.
+- Document architectural decisions and structure conventions in README or docs.
+
+5.2 DESIGN PATTERN SELECTION
+-----------------------------
+- Choose patterns based on problem requirements, not because they're popular.
+- Prefer simple solutions over complex patterns when they solve the problem adequately.
+- Use common patterns appropriately:
+  * Component pattern for UI (React, Vue, etc.)
+  * Observer pattern for event-driven communication
+  * Factory pattern for object creation with complexity
+  * Strategy pattern for interchangeable algorithms
+  * Repository pattern for data access abstraction
+  * Dependency Injection for loose coupling and testability
+- Don't force patterns where they don't fit - patterns should serve the code, not vice versa.
+- Document why a pattern was chosen when it's not immediately obvious.
+- Refactor to patterns when code duplication or complexity warrants it, not prematurely.
+
+5.3 SEPARATION OF CONCERNS
+---------------------------
+- Keep UI components focused on presentation and user interaction.
+- Extract business logic into service classes or utility functions.
+- Separate data access/fetching logic from business logic.
+- Keep API clients separate from application logic.
+- Isolate side effects (API calls, localStorage, etc.) from pure logic.
+- Don't mix routing concerns with component rendering logic.
+- Separate validation logic from form components.
+- Keep configuration and environment-specific code separate from core logic.
+- Use clear interfaces/contracts between layers to maintain separation.
+- Test each layer independently to ensure proper separation.
+
+5.4 SCALABILITY CONSIDERATIONS
+-------------------------------
+- Design APIs and data structures to handle growth (pagination, filtering, etc.).
+- Use database indexing appropriately for query performance.
+- Implement proper state management that can scale with application complexity.
+- Design component architecture that allows for feature addition without major refactoring.
+- Consider horizontal scaling in API design (stateless services, shared nothing).
+- Use caching strategies that can scale (distributed caching for multi-instance deployments).
+- Plan for codebase growth - modularize early to avoid monolithic structure.
+- Design for team scalability - clear ownership, minimal conflicts, parallel development.
+- Consider performance implications of design decisions at larger scales.
+- Document scalability assumptions and limits.
+
+5.5 MAINTAINABILITY RULES
+--------------------------
+- Write code that is easy to understand and modify, not just easy to write.
+- Keep functions and classes small and focused on a single responsibility.
+- Use meaningful abstractions that reduce complexity for future maintainers.
+- Document non-obvious decisions, business rules, and complex logic.
+- Maintain consistent patterns throughout the codebase - new code should feel familiar.
+- Refactor regularly to reduce technical debt before it accumulates.
+- Write tests that serve as documentation and prevent regressions.
+- Avoid deep coupling between modules - use dependency injection and interfaces.
+- Keep dependencies up to date and remove unused ones regularly.
+- Make architectural decisions explicit through documentation and code structure.
+
+================================================================================
+SECTION 6: DOCUMENTATION STANDARDS
+================================================================================
+
+6.1 CODE DOCUMENTATION REQUIREMENTS
+------------------------------------
+- Document public APIs (functions, classes, modules) that will be used by others.
+- Explain "why" not "what" - code should be self-explanatory, comments explain reasoning.
+- Use JSDoc/TSDoc comments for functions and classes with parameters and return types.
+- Document complex algorithms or non-obvious implementation details.
+- Explain business logic and domain rules that aren't obvious from code alone.
+- Include examples in documentation when usage might be unclear.
+- Document edge cases and assumptions made in the code.
+- Keep documentation close to code - inline comments or adjacent markdown files.
+- Update documentation when code changes - outdated docs are worse than no docs.
+- Use clear, concise language - avoid verbose or redundant documentation.
+
+6.2 COMMENT GUIDELINES
+-----------------------
+- Write self-documenting code - prefer clear naming over comments explaining what code does.
+- Use comments to explain "why" decisions were made, not "what" the code does.
+- Remove commented-out code - use version control to track history instead.
+- Keep comments up to date - outdated comments create confusion and misinformation.
+- Use TODO comments sparingly and include context or issue tracking references.
+- Write comments at the same level of abstraction as the code they describe.
+- Use consistent comment style throughout the project (// vs /* */, placement, etc.).
+- Avoid obvious comments that just restate the code (e.g., // increment counter).
+- Use comments to explain non-obvious behavior, workarounds, or temporary solutions.
+- Group related comments and keep them close to the code they explain.
+
+6.3 README STANDARDS
+--------------------
+- Include clear project title and description at the top.
+- Provide installation instructions with prerequisites and step-by-step setup.
+- Include usage examples showing common use cases.
+- Document configuration options and environment variables.
+- Explain project structure and organization.
+- Provide contribution guidelines for open-source projects.
+- Include troubleshooting section for common issues.
+- Add badges for build status, coverage, version, etc. when applicable.
+- Keep README up to date with current project state and features.
+- Use clear formatting with headers, lists, and code blocks for readability.
+
+6.4 API DOCUMENTATION FORMAT
+-----------------------------
+- Document all endpoints with HTTP method, path, parameters, request/response formats.
+- Include example requests and responses for each endpoint.
+- Document authentication requirements and authorization rules.
+- Specify error responses with status codes and error message formats.
+- Document rate limiting, pagination, and other API constraints.
+- Include versioning information and deprecation notices.
+- Use consistent format (OpenAPI/Swagger, Markdown, etc.) throughout.
+- Provide interactive documentation when possible (Swagger UI, GraphQL Playground, etc.).
+- Document data models and types used in requests/responses.
+- Keep API documentation synchronized with implementation.
+
+================================================================================
+SECTION 7: AI BEHAVIOR GUIDELINES
+================================================================================
+
+7.1 PROBLEM-SOLVING APPROACH
+-----------------------------
+- Understand the problem fully before proposing solutions - ask clarifying questions
+  when requirements are ambiguous.
+- Break complex problems into smaller, manageable sub-problems.
+- Consider multiple solution approaches and evaluate trade-offs before implementing.
+- Start with the simplest solution that works, then iterate if needed.
+- Test understanding by restating the problem and proposed solution before implementing.
+- Consider edge cases and error scenarios from the beginning.
+- Think about maintainability and scalability, not just immediate functionality.
+- Verify assumptions about existing codebase before building upon them.
+- Provide solutions that fit the existing codebase style and patterns.
+- Explain the approach and rationale, especially for non-obvious decisions.
+
+7.2 WHEN TO ASK QUESTIONS VS. PROCEED
+--------------------------------------
+ASK QUESTIONS when:
+- Requirements are ambiguous or contradictory.
+- Multiple valid implementations exist with significantly different trade-offs.
+- The request would conflict with existing codebase patterns or conventions.
+- Security, performance, or architectural implications need user input.
+- The user's intent is unclear from the request.
+- The solution requires making assumptions about business logic or user preferences.
+
+PROCEED WITH REASONABLE ASSUMPTIONS when:
+- The requirement is clear and the implementation approach is standard.
+- The codebase has clear patterns to follow.
+- The solution is straightforward and low-risk.
+- Following best practices for the technology stack.
+- The user has provided sufficient context in previous interactions.
+
+When proceeding with assumptions, state them clearly in the response so the user
+can correct if needed.
+
+7.3 DECISION-MAKING FRAMEWORK
+------------------------------
+When making technical decisions, consider in this order:
+1. User's explicit requirements and preferences
+2. Existing codebase patterns and conventions
+3. Best practices for the technology stack
+4. Performance and scalability implications
+5. Maintainability and code quality
+6. Development time and complexity trade-offs
+
+Document decisions when they involve trade-offs or when multiple valid options exist.
+Prefer solutions that are maintainable and follow established patterns over clever
+but unfamiliar approaches.
+
+7.4 TESTING AND VALIDATION REQUIREMENTS
+----------------------------------------
+- Write tests for critical business logic and complex algorithms.
+- Test edge cases, error conditions, and boundary values.
+- Ensure code runs without errors before considering it complete.
+- Verify functionality matches requirements before marking as done.
+- Test in relevant environments (browser, Node.js, etc.) when applicable.
+- Check for common issues: type errors, undefined references, async/await handling.
+- Validate that changes don't break existing functionality (regression testing).
+- Test error handling paths, not just happy paths.
+- Use appropriate testing tools and frameworks for the technology stack.
+- When tests are requested, ensure they provide value and aren't just for coverage metrics.
+
+7.5 ITERATION AND IMPROVEMENT PROCESSES
+----------------------------------------
+- Start with working code, then refine for quality, performance, and maintainability.
+- Make incremental improvements rather than large refactorings unless explicitly requested.
+- Address linter errors and warnings to maintain code quality.
+- Refactor when patterns emerge or code duplication becomes apparent.
+- Improve based on feedback and actual usage patterns, not theoretical concerns.
+- Balance perfectionism with pragmatism - ship working code, improve iteratively.
+- Document improvements and rationale for future reference.
+- Consider impact of changes on other parts of the codebase.
+- Maintain backward compatibility when possible, or clearly document breaking changes.
+- Use version control best practices - logical commits, clear messages, appropriate branching.
+
+================================================================================
+SECTION 8: ADDITIONAL BEST PRACTICES
+================================================================================
+
+8.1 SECURITY CONSIDERATIONS
+----------------------------
+- Never hardcode secrets, API keys, or credentials in code.
+- Validate and sanitize all user inputs to prevent injection attacks.
+- Use parameterized queries for database operations to prevent SQL injection.
+- Implement proper authentication and authorization checks.
+- Use HTTPS for all network communications in production.
+- Keep dependencies updated to patch security vulnerabilities.
+- Follow principle of least privilege for permissions and access.
+- Don't trust client-side validation alone - validate on server as well.
+- Use Content Security Policy (CSP) headers to prevent XSS attacks.
+- Implement proper session management and CSRF protection.
+
+8.2 VERSION CONTROL PRACTICES
+------------------------------
+- Write clear, descriptive commit messages explaining what and why.
+- Make logical, atomic commits - each commit should represent one complete change.
+- Don't commit generated files, build artifacts, or sensitive information.
+- Use .gitignore appropriately to exclude unnecessary files.
+- Create meaningful branch names that describe the feature or fix.
+- Keep commits focused - don't mix unrelated changes.
+- Use appropriate merge strategies (rebase vs. merge) based on team preferences.
+- Tag releases appropriately for easy reference.
+- Review changes before committing to catch errors early.
+- Follow the project's branching strategy (Git Flow, GitHub Flow, etc.).
+
+8.3 DEPENDENCY MANAGEMENT
+--------------------------
+- Pin dependency versions appropriately (exact for libraries, ranges when acceptable).
+- Regularly update dependencies to receive security patches and improvements.
+- Remove unused dependencies to reduce bundle size and security surface.
+- Document why specific dependency versions are required if they differ from latest.
+- Use lock files (package-lock.json, yarn.lock) to ensure reproducible builds.
+- Be cautious with transitive dependencies - audit the full dependency tree.
+- Prefer well-maintained, popular libraries over obscure alternatives.
+- Consider license compatibility when adding dependencies.
+- Keep dependency count reasonable - every dependency is a maintenance burden.
+- Document custom dependency configurations or workarounds.
+
+8.4 ENVIRONMENT CONFIGURATION
+------------------------------
+- Use environment variables for configuration that varies between environments.
+- Never commit secrets or sensitive configuration to version control.
+- Provide example environment files (.env.example) with required variables documented.
+- Use appropriate defaults that work for local development.
+- Validate required environment variables at application startup.
+- Separate configuration from code - make apps configurable, not hardcoded.
+- Use configuration files (config.js, settings.json) for complex configurations.
+- Document all configuration options and their purposes.
+- Test applications with different environment configurations.
+- Use environment-specific configs (development, staging, production) appropriately.
+
+8.5 DEPLOYMENT REQUIREMENTS
+----------------------------
+- ALWAYS deploy changes to all relevant third-party services after making updates.
+- After any code changes, version updates, or builds, deploy to:
+  * GitHub (commit and push all changes)
+  * Backend hosting (Railway, Render, Heroku, etc.) - deploy backend changes
+  * Frontend hosting (Netlify, Vercel, etc.) - deploy frontend changes if applicable
+  * Any other services used (Supabase, Cloudflare, etc.) if configuration changes were made
+- When updating versions:
+  1. Update version numbers in both app and backend code
+  2. Build new executables if applicable
+  3. Copy executables to appropriate deployment locations
+  4. Commit all changes to Git
+  5. Push to GitHub
+  6. Deploy to backend hosting (e.g., Railway)
+  7. Verify deployment succeeded
+- Never consider a task complete until all deployments are finished.
+- If deployment fails, investigate and fix before marking task as complete.
+- Document deployment steps in commit messages for traceability.
+- For executable updates: ensure the executable is copied to frontend/public folder
+  and that backend download endpoint is updated if needed.
+
+================================================================================
+SECTION 9: TECHNOLOGY-SPECIFIC GUIDELINES
+================================================================================
+
+9.1 REACT/FRONTEND FRAMEWORKS
+------------------------------
+- Use functional components with hooks instead of class components (React).
+- Keep components small and focused on a single responsibility.
+- Extract custom hooks for reusable stateful logic.
+- Use proper dependency arrays in useEffect to avoid bugs and infinite loops.
+- Memoize expensive computations and components when appropriate (useMemo, useCallback).
+- Lift state up when multiple components need to share it.
+- Use Context API for global state, but avoid overusing it - prefer prop drilling
+  for simple cases.
+- Implement proper cleanup in useEffect (return cleanup functions).
+- Avoid direct DOM manipulation - use React's declarative approach.
+- Use TypeScript for type safety in React applications.
+
+9.2 NODE.JS/BACKEND
+--------------------
+- Use async/await instead of callback hell or promise chains for readability.
+- Handle errors properly in async functions with try-catch blocks.
+- Use appropriate HTTP status codes in API responses.
+- Implement proper request validation and sanitization.
+- Use environment variables for configuration, not hardcoded values.
+- Implement proper logging (structured logging recommended).
+- Use connection pooling for database connections.
+- Handle process signals gracefully (SIGTERM, SIGINT) for clean shutdowns.
+- Implement health check endpoints for monitoring.
+- Use appropriate middleware for cross-cutting concerns (auth, logging, etc.).
+
+9.3 DATABASE
+-------------
+- Normalize database schema appropriately - balance normalization with query performance.
+- Use indexes on frequently queried columns and foreign keys.
+- Implement proper migrations for schema changes.
+- Use transactions for operations that must succeed or fail together.
+- Avoid N+1 query problems - use joins or batch loading when fetching related data.
+- Validate data at the database level with constraints, not just application level.
+- Use prepared statements/parameterized queries to prevent SQL injection.
+- Design schemas with scalability in mind - consider partitioning, sharding strategies.
+- Implement proper database connection handling and connection pooling.
+- Use appropriate data types - don't store everything as strings.
+
+9.4 CSS/STYLING
+----------------
+- Use CSS-in-JS, CSS Modules, or scoped styles to avoid global style conflicts.
+- Follow BEM or similar naming convention if using regular CSS.
+- Use CSS custom properties (variables) for theming and consistent values.
+- Prefer Flexbox and Grid for layouts over floats and positioning.
+- Use relative units (rem, em) for scalable typography and spacing.
+- Avoid inline styles except for dynamic values.
+- Organize CSS with logical structure (component-based, feature-based, etc.).
+- Use meaningful class names that describe purpose, not appearance.
+- Avoid overly specific selectors that create tight coupling.
+- Consider using a CSS framework or design system for consistency and speed.
+
+================================================================================
+SECTION 10: QUALITY ASSURANCE CHECKLIST
+================================================================================
+
+Before considering any code complete, verify:
+
+[ ] Code follows project's style guide and conventions
+[ ] Always ask follow up questions if applicable so we prevent having to go through multiple prompts
+[ ] No linter errors or warnings
+[ ] TypeScript/type checking passes (if applicable)
+[ ] All user requirements have been met
+[ ] Error handling is implemented appropriately
+[ ] Code is readable and maintainable
+[ ] Performance considerations have been addressed
+[ ] Security best practices have been followed
+[ ] Tests pass (if tests exist or were requested)
+[ ] Documentation is updated (if applicable)
+[ ] Code works in target environment(s)
+[ ] No console.log statements or debug code left behind
+[ ] Dependencies are properly managed
+[ ] Environment variables are properly configured
+[ ] No hardcoded values that should be configurable
+[ ] Proper cleanup of resources (event listeners, timers, connections)
+[ ] Accessibility requirements are met (for UI code)
+[ ] Responsive design works (for UI code)
+[ ] Browser compatibility is considered (for web code)
+[ ] All changes have been deployed to relevant third-party services (GitHub, Railway, Netlify, etc.)
+[ ] Version numbers updated in all relevant files (app, backend, etc.)
+[ ] Executables built and copied to deployment locations if applicable
+
+================================================================================
+                            END OF RULES DOCUMENT
+================================================================================
+
+These rules should be reviewed and followed to ensure efficient AI assistance
+and production of high-quality code, programs, and websites. Adapt these rules
+to specific project requirements and team preferences as needed.
+
+Last Updated: 2026
+Version: 1.0
