@@ -22,7 +22,10 @@ export const getPool = () => {
   return pool;
 };
 
-export const query = async <T = unknown>(text: string, params?: unknown[]) => {
+export const query = async <T extends pg.QueryResultRow = pg.QueryResultRow>(
+  text: string,
+  params?: unknown[]
+) => {
   const activePool = getPool();
   const result = await activePool.query<T>(text, params);
   return result;
