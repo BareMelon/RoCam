@@ -19,14 +19,20 @@ export const buildApp = async () => {
 
   await app.register(cors, {
     origin: (origin, callback) => {
-      if (!origin || !config.dashboardOrigin) {
+      if (!origin) {
         callback(null, true);
         return;
       }
-
+      if (!config.dashboardOrigin) {
+        callback(null, true);
+        return;
+      }
       const allowed = config.dashboardOrigin.split(",").map((entry) => entry.trim());
-      const isAllowed = allowed.includes(origin);
-      callback(null, isAllowed);
+      if (allowed.includes("*")) {
+        callback(null, true);
+        return;
+      }
+      callback(null, allowed.includes(origin));
     }
   });
 

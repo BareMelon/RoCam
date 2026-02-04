@@ -11,7 +11,7 @@ import { fileURLToPath } from "url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const migrationsDir = path.join(__dirname, "../migrations");
-const migrationFiles = ["001_init.sql", "002_add_developer_notes.sql", "003_beta_access_keys.sql"];
+const migrationFiles = ["001_init.sql", "002_add_developer_notes.sql", "003_beta_access_keys.sql", "004_game_stats.sql"];
 
 async function run() {
   const databaseUrl = process.env.DATABASE_URL;
